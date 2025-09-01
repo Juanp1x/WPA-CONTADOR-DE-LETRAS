@@ -2,7 +2,7 @@
   "name": "Contador de Letras",
   "short_name": "ContadorLetras",
   "description": "Aplicación para contar letras y caracteres en textos",
-  "start_url": "/tu-repositorio/",
+  "start_url": "/WPA-CONTADOR-DE-LETRAS/",
   "display": "standalone",
   "background_color": "#6e8efb",
   "theme_color": "#6e8efb",
