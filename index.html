@@ -6,7 +6,10 @@
     <title>Contador de Letras PWA</title>
     <meta name="description" content="Aplicación para contar letras y caracteres en textos">
     <meta name="theme-color" content="#6e8efb">
-     <link rel="manifest" href="/WPA-CONTADOR-DE-LETRAS/manifest.json">
+
+    <!-- Manifest con ruta relativa -->
+    <link rel="manifest" href="./manifest.json">
+
     <link rel="icon" href="https://images.icon-icons.com/3251/PNG/512/text_word_count_regular_icon_203130.png">
     <style>
         * {
@@ -190,10 +193,10 @@
     <button id="installBtn" class="install-btn" title="Instalar app">+</button>
 
     <script>
-        // Registro del Service Worker
+        // Registro del Service Worker con ruta relativa
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {   
-                navigator.serviceWorker.register('/WPA-CONTADOR-DE-LETRAS/sw.js')
+                navigator.serviceWorker.register('./sw.js')
                 .then((registration) => {
                     console.log('ServiceWorker registrado con éxito: ', registration.scope);
                 })
@@ -212,7 +215,6 @@
             const detailsElement = document.getElementById('details');
             const installBtn = document.getElementById('installBtn');
             
-            // Función para contar letras
             function countLetters() {
                 let text = textInput.value;
                 const ignoreSpaces = ignoreSpacesCheckbox.checked;
@@ -224,7 +226,6 @@
                 const count = text.length;
                 letterCountElement.textContent = count.toLocaleString();
                 
-                // Mostrar detalles adicionales
                 if (text.length > 0) {
                     const withSpaces = textInput.value.length;
                     if (ignoreSpaces) {
@@ -237,7 +238,6 @@
                 }
             }
             
-            // Event listeners
             countButton.addEventListener('click', countLetters);
             
             textInput.addEventListener('input', function() {
@@ -253,10 +253,8 @@
                 }
             });
             
-            // Contar automáticamente mientras se escribe
             textInput.addEventListener('input', countLetters);
             
-            // Lógica para instalar la PWA
             let deferredPrompt;
             
             window.addEventListener('beforeinstallprompt', (e) => {
