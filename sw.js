@@ -1,9 +1,9 @@
 const CACHE_NAME = 'contador-letras-v1';
 const urlsToCache = [
-  '/WPA-CONTADOR-DE-LETRAS/',
-  '/WPA-CONTADOR-DE-LETRAS/index.html',
-  '/WPA-CONTADOR-DE-LETRAS/manifest.json',
-  '/WPA-CONTADOR-DE-LETRAS/sw.js',
+  './',
+  './index.html',
+  './manifest.json',
+  './sw.js',
   'https://images.icon-icons.com/3251/PNG/512/text_word_count_regular_icon_203130.png'
 ];
 
@@ -42,4 +42,3 @@ self.addEventListener('fetch', (event) => {
       })
   );
 });
-
