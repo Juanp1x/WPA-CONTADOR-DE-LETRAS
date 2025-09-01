@@ -2,7 +2,7 @@
   "name": "Contador de Letras",
   "short_name": "ContadorLetras",
   "description": "Aplicación para contar letras y caracteres en textos",
-  "start_url": "/",
+  "start_url": "/tu-repositorio/",
   "display": "standalone",
   "background_color": "#6e8efb",
   "theme_color": "#6e8efb",
@@ -13,21 +13,6 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
-    },
-    {
-      "src": "https://images.icon-icons.com/3251/PNG/256/text_word_count_regular_icon_203130.png",
-      "sizes": "256x256",
-      "type": "image/png"
-    },
-    {
-      "src": "https://images.icon-icons.com/3251/PNG/128/text_word_count_regular_icon_203130.png",
-      "sizes": "128x128",
-      "type": "image/png"
-    },
-    {
-      "src": "https://images.icon-icons.com/3251/PNG/64/text_word_count_regular_icon_203130.png",
-      "sizes": "64x64",
-      "type": "image/png"
     }
   ],
   "categories": ["utilities", "productivity"]
