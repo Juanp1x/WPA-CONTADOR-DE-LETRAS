@@ -1,26 +1,45 @@
 const CACHE_NAME = 'contador-letras-v1';
 const urlsToCache = [
-  '/tu-repositorio/',
-  '/tu-repositorio/index.html',
+  '/WPA-CONTADOR-DE-LETRAS/',
+  '/WPA-CONTADOR-DE-LETRAS/index.html',
+  '/WPA-CONTADOR-DE-LETRAS/manifest.json',
+  '/WPA-CONTADOR-DE-LETRAS/sw.js',
   'https://images.icon-icons.com/3251/PNG/512/text_word_count_regular_icon_203130.png'
 ];
 
-self.addEventListener('install', function(event) {
+// Instalación: cachear archivos iniciales
+self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then(function(cache) {
+      .then((cache) => {
         console.log('Cache abierto');
         return cache.addAll(urlsToCache);
       })
   );
 });
 
-self.addEventListener('fetch', function(event) {
+// Activación: limpiar caches viejas
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cache) => {
+          if (cache !== CACHE_NAME) {
+            return caches.delete(cache);
+          }
+        })
+      );
+    })
+  );
+});
+
+// Fetch: responder desde cache o red
+self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(event.request)
-      .then(function(response) {
-        // Devuelve el recurso en cache o haz una petición network
+      .then((response) => {
         return response || fetch(event.request);
       })
   );
 });
+
