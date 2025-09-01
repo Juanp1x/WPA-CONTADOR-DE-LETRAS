@@ -1,7 +1,7 @@
 const CACHE_NAME = 'contador-letras-v1';
 const urlsToCache = [
-  '/',
-  './index.html',
+  '/tu-repositorio/',
+  '/tu-repositorio/index.html',
   'https://images.icon-icons.com/3251/PNG/512/text_word_count_regular_icon_203130.png'
 ];
 
@@ -19,11 +19,8 @@ self.addEventListener('fetch', function(event) {
   event.respondWith(
     caches.match(event.request)
       .then(function(response) {
-        if (response) {
-          return response;
-        }
-        return fetch(event.request);
-      }
-    )
+        // Devuelve el recurso en cache o haz una petición network
+        return response || fetch(event.request);
+      })
   );
 });
