@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contador de Letras</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            width: 90%;
+            max-width: 500px;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .description {
+            color: #666;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+        
+        .input-container {
+            margin-bottom: 25px;
+        }
+        
+        textarea {
+            width: 100%;
+            height: 150px;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            resize: none;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #6e8efb;
+        }
+        
+        .options {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        input[type="checkbox"] {
+            margin-right: 8px;
+        }
+        
+        button {
+            background: linear-gradient(to right, #6e8efb, #a777e3);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .result {
+            margin-top: 25px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .result h2 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        
+        .count {
+            font-size: 48px;
+            font-weight: 700;
+            color: #6e8efb;
+        }
+        
+        .details {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        @media (max-width: 600px) {
+            .options {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Contador de Letras</h1>
+        <p class="description">Escribe o pega tu texto en el área inferior y descubre cuántas letras contiene.</p>
+        
+        <div class="input-container">
+            <textarea id="text-input" placeholder="Escribe tu texto aquí..."></textarea>
+        </div>
+        
+        <div class="options">
+            <div class="checkbox-container">
+                <input type="checkbox" id="ignore-spaces">
+                <label for="ignore-spaces">Ignorar espacios</label>
+            </div>
+            
+            <button id="count-btn">Contar Letras</button>
+        </div>
+        
+        <div class="result">
+            <h2>Total de letras:</h2>
+            <div id="letter-count" class="count">0</div>
+            <div id="details" class="details"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const textInput = document.getElementById('text-input');
+            const ignoreSpacesCheckbox = document.getElementById('ignore-spaces');
+            const countButton = document.getElementById('count-btn');
+            const letterCountElement = document.getElementById('letter-count');
+            const detailsElement = document.getElementById('details');
+            
+            // Función para contar letras
+            function countLetters() {
+                let text = textInput.value;
+                const ignoreSpaces = ignoreSpacesCheckbox.checked;
+                
+                if (ignoreSpaces) {
+                    text = text.replace(/\s/g, '');
+                }
+                
+                const count = text.length;
+                letterCountElement.textContent = count.toLocaleString();
+                
+                // Mostrar detalles adicionales
+                if (text.length > 0) {
+                    const withSpaces = textInput.value.length;
+                    if (ignoreSpaces) {
+                        detailsElement.textContent = `(El texto original tenía ${withSpaces.toLocaleString()} caracteres incluyendo espacios)`;
+                    } else {
+                        detailsElement.textContent = `Incluyendo espacios`;
+                    }
+                } else {
+                    detailsElement.textContent = '';
+                }
+            }
+            
+            // Event listeners
+            countButton.addEventListener('click', countLetters);
+            
+            textInput.addEventListener('input', function() {
+                if (this.value.length === 0) {
+                    letterCountElement.textContent = '0';
+                    detailsElement.textContent = '';
+                }
+            });
+            
+            ignoreSpacesCheckbox.addEventListener('change', function() {
+                if (textInput.value.length > 0) {
+                    countLetters();
+                }
+            });
+            
+            // Contar automáticamente mientras se escribe
+            textInput.addEventListener('input', countLetters);
+        });
+    </script>
+</body>
+</html>
