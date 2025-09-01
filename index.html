@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contador de Letras</title>
+    <title>Contador de Letras PWA</title>
+    <meta name="description" content="Aplicación para contar letras y caracteres en textos">
+    <meta name="theme-color" content="#6e8efb">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="https://images.icon-icons.com/3251/PNG/512/text_word_count_regular_icon_203130.png">
     <style>
         * {
             margin: 0;
@@ -16,6 +20,7 @@
             background: linear-gradient(135deg, #6e8efb, #a777e3);
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             padding: 20px;
@@ -29,6 +34,7 @@
             max-width: 500px;
             padding: 30px;
             text-align: center;
+            margin-top: 20px;
         }
         
         h1 {
@@ -67,11 +73,13 @@
             display: flex;
             justify-content: space-between;
             margin-bottom: 20px;
+            flex-wrap: wrap;
         }
         
         .checkbox-container {
             display: flex;
             align-items: center;
+            margin-bottom: 10px;
         }
         
         input[type="checkbox"] {
@@ -125,6 +133,23 @@
             color: #666;
         }
         
+        .install-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #333;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            display: none;
+            z-index: 1000;
+        }
+        
         @media (max-width: 600px) {
             .options {
                 flex-direction: column;
@@ -139,8 +164,8 @@
 </head>
 <body>
     <div class="container">
-        <h1>Contador de Letras</h1>
-        <p class="description">Escribe o pega tu texto en el área inferior y descubre cuántas letras contiene.</p>
+        <h1>Contador de Letras PWA</h1>
+        <p class="description">Escribe o pega tu texto en el área inferior y descubre cuántas letras contiene. Esta app funciona sin conexión.</p>
         
         <div class="input-container">
             <textarea id="text-input" placeholder="Escribe tu texto aquí..."></textarea>
@@ -162,13 +187,30 @@
         </div>
     </div>
 
+    <button id="installBtn" class="install-btn" title="Instalar app">+</button>
+
     <script>
+        // Registro del Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                .then((registration) => {
+                    console.log('ServiceWorker registrado con éxito: ', registration.scope);
+                })
+                .catch((error) => {
+                    console.log('Error al registrar el ServiceWorker: ', error);
+                });
+            });
+        }
+
+        // Lógica de la aplicación
         document.addEventListener('DOMContentLoaded', function() {
             const textInput = document.getElementById('text-input');
             const ignoreSpacesCheckbox = document.getElementById('ignore-spaces');
             const countButton = document.getElementById('count-btn');
             const letterCountElement = document.getElementById('letter-count');
             const detailsElement = document.getElementById('details');
+            const installBtn = document.getElementById('installBtn');
             
             // Función para contar letras
             function countLetters() {
@@ -213,6 +255,36 @@
             
             // Contar automáticamente mientras se escribe
             textInput.addEventListener('input', countLetters);
+            
+            // Lógica para instalar la PWA
+            let deferredPrompt;
+            
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+                installBtn.style.display = 'block';
+            });
+            
+            installBtn.addEventListener('click', () => {
+                if (!deferredPrompt) return;
+                
+                deferredPrompt.prompt();
+                
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('Usuario aceptó instalar la PWA');
+                    } else {
+                        console.log('Usuario rechazó instalar la PWA');
+                    }
+                    deferredPrompt = null;
+                });
+            });
+            
+            window.addEventListener('appinstalled', () => {
+                console.log('PWA fue instalada');
+                installBtn.style.display = 'none';
+                deferredPrompt = null;
+            });
         });
     </script>
 </body>
